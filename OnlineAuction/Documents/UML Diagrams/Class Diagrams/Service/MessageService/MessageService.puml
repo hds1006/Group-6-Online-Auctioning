@@ -1,0 +1,16 @@
+@startuml
+class MessageService [[java:edu.sru.cpsc.webshopping.service.MessageService]] {
+	~log: Logger
+	-messageRepository: MessageSocialRepository
+	-groupRepository: GroupRepository
+	+getAllMessagesForUser(user: User): List<SocialMessage>
+	+getAllMessagesForUser(user1: User, user2: User): List<SocialMessage>
+	+getAllMessagesForGroup(groupId: Long): List<SocialMessage>
+	+getUnreadMessagesForUser(recipient: User): List<SocialMessage>
+	+markMessageAsRead(message: SocialMessage): void
+	+markMessageAsDelivered(message: SocialMessage): void
+	+saveMessage(message: SocialMessage): SocialMessage
+	+markAllMessagesAsRead(user: User): void
+	+getUnreadMessageCount(user: User): int
+}
+@enduml

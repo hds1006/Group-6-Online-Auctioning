@@ -1,0 +1,14 @@
+@startuml
+title Club Operations Use Case Diagram
+
+actor User
+
+package "Club Operations" {
+  usecase "Create Club" as CreateClub
+  usecase "View Club" as ViewClub
+}
+
+User --> CreateClub : initiates
+User --> ViewClub : initiates
+
+@enduml

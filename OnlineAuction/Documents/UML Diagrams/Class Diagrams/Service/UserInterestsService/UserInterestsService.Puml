@@ -1,0 +1,11 @@
+@startuml
+class UserInterestService [[java:edu.sru.cpsc.webshopping.service.UserInterestService]] {
+	-userInterestRepository: UserInterestRepository
+	-marketListingRepository: MarketListingRepository
+	+saveUserInterests(userInterests: UserInterests): void
+	+findByUserId(userId: Long): UserInterests
+	+getRecommendedProducts(userInterests: UserInterests): List<MarketListing>
+	+getRecommendedProductsByPrice(userInterests: UserInterests, maxPrice: BigDecimal): List<MarketListing>
+	+getPopularItems(categories: List<String>, minPageViews: int): List<MarketListing>
+}
+@enduml

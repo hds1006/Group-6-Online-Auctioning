@@ -1,0 +1,42 @@
+@startuml
+
+state Offer {
+    [*] --> InitialOffer
+    
+    state "Offer Process" as OfferProcess {
+        InitialOffer: User sends first offer (1/3)
+        CounterOffer: Seller counter offers
+        BuyerCounter: User sends counter (2/3 or 3/3)
+        
+        InitialOffer --> CounterOffer: Seller counters
+        InitialOffer --> AcceptOffer: Seller accepts
+        InitialOffer --> RejectOffer: Seller rejects
+        
+        CounterOffer --> BuyerCounter: User counters
+        CounterOffer --> AcceptOffer: User accepts
+        CounterOffer --> RejectOffer: User rejects
+        
+        BuyerCounter --> CounterOffer: Seller counters
+        BuyerCounter --> AcceptOffer: Seller accepts
+        BuyerCounter --> RejectOffer: Seller rejects
+    }
+    
+    state PurchasePage {
+        [*] --> BuyItem
+        BuyItem: User can purchase at agreed price
+        BuyItem --> [*]: Complete purchase
+        BuyItem --> OfferExpired: 24h elapsed
+    }
+    
+    AcceptOffer --> PurchasePage: Redirect to purchase
+    RejectOffer --> [*]: Max offers or declined
+    OfferExpired --> [*]: Time limit reached
+}
+
+note right of OfferProcess
+  User limited to 3 total offers
+  24-hour window for all negotiations
+  Notifications sent for all state changes
+end note
+
+@enduml

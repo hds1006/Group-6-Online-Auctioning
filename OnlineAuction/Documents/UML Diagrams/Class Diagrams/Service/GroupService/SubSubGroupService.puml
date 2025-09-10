@@ -1,0 +1,15 @@
+@startuml
+class SubSubGroupService {
+    - SubSubGroupRepository subSubGroupRepository
+    + SubSubGroup createSubSubGroup(SubGroup subGroup, String name, String description, User owner): SubSubGroup
+    + SubSubGroup getSubSubGroupById(Long id): SubSubGroup
+    + List<SubSubGroup> getSubSubGroupsBySubGroup(Long subGroupId): List<SubSubGroup>
+    + void saveSubSubGroup(SubSubGroup subSubGroup)
+    + List<SubSubGroup> findAll(): List<SubSubGroup>
+    + void deleteSubSubGroup(SubSubGroup subSubgroup)
+}
+
+SubSubGroupService --> SubSubGroupRepository : uses
+SubSubGroupService --> SubGroup : interacts with
+SubSubGroupService --> User : interacts with
+@enduml

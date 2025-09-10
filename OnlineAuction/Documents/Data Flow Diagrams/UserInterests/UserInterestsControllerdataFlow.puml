@@ -1,0 +1,27 @@
+@startuml
+
+actor User
+boundary UserInterface
+control UserInterestController
+entity UserInterests
+entity MarketListing
+database Database
+
+User -> UserInterface: Access Preferences
+UserInterface -> UserInterestController: showPreferenceDetails()
+UserInterestController -> Database: findByUsername()
+UserInterestController -> UserInterests: Create/Retrieve
+
+User -> UserInterface: Submit Interests
+UserInterface -> UserInterestController: submitUserInterests()
+UserInterestController -> UserInterests: Update/Save
+UserInterestController -> Database: saveUserInterests()
+
+User -> UserInterface: View Recommended Products
+UserInterface -> UserInterestController: showRecommendedProducts()
+UserInterestController -> UserInterests: getRecommendedProducts()/getRecommendedProductsByPrice()
+UserInterestController -> MarketListing: getPageViews()
+UserInterestController -> MarketListing: getCategory()
+UserInterestController -> Database: findById()
+
+@enduml

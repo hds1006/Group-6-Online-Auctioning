@@ -1,0 +1,58 @@
+@startuml
+|SubGroup|
+start
+
+:Create SubGroup;
+:Fill in details (name, description, clubs, owner, creation date);
+:Create SubGroup object;
+
+|SubGroup|
+:Assign ID;
+:Store in Database;
+
+|SubGroup|
+:Create SubSubGroup;
+:Enter SubSubGroup details (name, description, owner);
+
+|SubGroup|
+:Save SubSubGroup to SubGroup;
+:Display updated SubGroup;
+
+|User|
+if (Is member of SubGroup?) then (yes)
+  :Access SubGroup;
+  :View details;
+  :Manage SubGroup (add/remove members);
+else (no)
+  :Access Denied;
+endif
+
+|User|
+if (Add Member?) then (yes)
+  :Add User to Members;
+  :Store in Database;
+else
+  :Continue;
+endif
+
+|User|
+if (Remove Member?) then (yes)
+  :Remove User from Members;
+  :Store in Database;
+else
+  :Continue;
+endif
+
+|SubGroup|
+if (Update Image?) then (yes)
+  :Upload New Image;
+  :Store Image URL/Path;
+else
+  :Continue;
+endif
+
+|SubGroup|
+:End Activity;
+stop
+
+@enduml

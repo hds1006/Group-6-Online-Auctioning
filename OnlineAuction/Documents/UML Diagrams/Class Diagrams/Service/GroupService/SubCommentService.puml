@@ -1,0 +1,34 @@
+@startuml  
+class SubCommentService {  
+  - subCommentRepository: SubCommentRepository  
+  + createComment(subComment: SubComment): void  
+  + getCommentsByPostId(subSubGroupPostId: Long): List<SubComment>  
+}  
+  
+class SubCommentRepository {  
+  + save(subComment: SubComment): void  
+  + findBySubSubGroupPostId(subSubGroupPostId: Long): List<SubComment>  
+}  
+  
+class SubComment {  
+  - id: Long  
+  - content: String  
+  - subSubGroupPost: SubSubGroupPosts  
+  + getId(): Long  
+  + getContent(): String  
+  + getSubSubGroupPost(): SubSubGroupPosts  
+}  
+  
+class SubSubGroupPosts {  
+  - id: Long  
+  - content: String  
+  - subSubgroupId: Long  
+  + getId(): Long  
+  + getContent(): String  
+  + getSubSubgroupId(): Long  
+}  
+  
+SubCommentService --> SubCommentRepository : uses  
+SubCommentRepository --> SubComment : returns  
+SubComment --> SubSubGroupPosts : has subSubGroupPost  
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+class MarketListingService [[java:edu.sru.cpsc.webshopping.service.MarketListingService]] {
+	~isDeleted: Collection<Boolean>
+	~quantityZero: Collection<Long>
+	~startPrice: double
+	~endPrice: double
+	~startQuantity: long
+	~endQuantity: long
+	~marketListingRepository: MarketListingRepository
+	+findPage(pageNum: int): Page<MarketListing>
+	+findPageWithFilter(pageNum: int, allParams: Map<String,String>, values: ArrayList<Object>): Page<MarketListing>
+	+findPageWithAttributeFilter(pageNum: int, year: String, condition: String, make: String, model_car: String, keywords: String, engine: String): Page<MarketListing>
+	-createAttributePredicate(cb: CriteriaBuilder, query: CriteriaQuery<?>, root: Root<MarketListing>, attributeKey: String, attributeValue: String): Predicate
+	+getUniqueAttributeValues(attributeKey: String): List<String>
+	+getAllUniqueAttributeValues(): Map<String,List<String>>
+	+getDependentAttributeValues(selectedFilters: Map<String,String>): Map<String,List<String>>
+	+getUpdatedAttributeValues(selectedFilters: Map<String,String>, changedAttribute: String): Map<String,List<String>>
+	-sortAttributeValues(attributeKey: String, values: List<String>): List<String>
+	-parseEngineSize(engineSize: String): double
+}
+@enduml

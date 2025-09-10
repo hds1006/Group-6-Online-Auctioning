@@ -1,0 +1,33 @@
+@startuml
+class UserInterests {
+  - id: Long
+  - home: Boolean
+  - auto: Boolean
+  - clothing: Boolean
+  - sports: Boolean
+  - art: Boolean
+  - cosmetics: Boolean
+  + getId(): Long
+  + setId(id: Long): void
+  + getHome(): Boolean
+  + setHome(home: Boolean): void
+  + getAuto(): Boolean
+  + setAuto(auto: Boolean): void
+  + getClothing(): Boolean
+  + setClothing(clothing: Boolean): void
+  + getSports(): Boolean
+  + setSports(sports: Boolean): void
+  + getArt(): Boolean
+  + setArt(art: Boolean): void
+  + getCosmetics(): Boolean
+  + setCosmetics(cosmetics: Boolean): void
+  + getUser(): User
+  + setUser(user: User): void
+}
+
+class User {
+  - id: Long
+}
+
+UserInterests "many" --> "1" User
+@enduml

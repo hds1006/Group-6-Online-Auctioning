@@ -1,0 +1,19 @@
+@startuml
+title Subgroup and Post Operations Use Case Diagram
+
+actor User
+
+package "Subgroup and Post Operations" {
+  usecase "Create Subgroup" as CreateSubgroup
+  usecase "View Subgroup" as ViewSubgroup
+  usecase "Create Post" as CreatePost
+  usecase "View All Posts" as ViewPosts
+}
+
+User --> CreateSubgroup : initiates
+User --> ViewSubgroup : initiates
+User --> CreatePost : initiates
+User --> ViewPosts : initiates
+
+@enduml
+

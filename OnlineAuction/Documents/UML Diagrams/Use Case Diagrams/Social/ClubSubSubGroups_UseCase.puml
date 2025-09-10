@@ -1,0 +1,22 @@
+@startuml
+actor User
+actor Owner
+actor System
+
+User --> (View Sub-Subgroup)
+User --> (Join Sub-Subgroup)
+User --> (Leave Sub-Subgroup)
+User --> (Check Membership)
+
+Owner --> (Create Sub-Subgroup)
+Owner --> (Add Member to Sub-Subgroup)
+Owner --> (Remove Member from Sub-Subgroup)
+Owner --> (Delete Sub-Subgroup)
+
+System --> (Delete Sub-Subgroup) : "Delete when no members left"
+
+(View Sub-Subgroup) .down.> (Check Membership) : includes
+(Join Sub-Subgroup) .down.> (Check Membership) : includes
+(Leave Sub-Subgroup) .down.> (Check Membership) : includes
+
+@enduml

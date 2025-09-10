@@ -1,0 +1,37 @@
+@startuml  
+class SubComment {  
+  - id: Long  
+  - content: String  
+  - subSubGroupPost: SubSubGroupPosts  
+  - user: User  
+  + getId(): Long  
+  + setId(id: Long): void  
+  + getContent(): String  
+  + setContent(content: String): void  
+  + getSubSubGroupPost(): SubSubGroupPosts  
+  + setSubSubGroupPost(subSubGroupPost: SubSubGroupPosts): void  
+  + getUser(): User  
+  + setUser(user: User): void  
+}  
+  
+class SubSubGroupPosts {  
+  - id: Long  
+  - content: String  
+  - subSubgroupId: Long  
+  + getId(): Long  
+  + getContent(): String  
+  + getSubSubgroupId(): Long  
+}  
+  
+class User {  
+  - id: Long  
+  - username: String  
+  - email: String  
+  + getId(): Long  
+  + getUsername(): String  
+  + getEmail(): String  
+}  
+  
+SubComment --> SubSubGroupPosts : has subSubGroupPost  
+SubComment --> User : has user  
+@enduml

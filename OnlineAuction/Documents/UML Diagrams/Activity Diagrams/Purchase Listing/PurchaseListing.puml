@@ -1,0 +1,27 @@
+@startuml Purchase Listing Activity Diagram
+title Purchase Listing Activity Diagram
+start
+
+:User logs in;
+:Browse Listings;
+if (Find specific listing?) then (yes)
+:Search Listings;
+endif
+:View Listing;
+if (Purchase listing?) then (yes)
+:Select Listing;
+:Proceed to Purchase;
+if (Add new Shipping Address?) then (yes)
+:Add New Shipping Address;
+else (no)
+:Use Existing Shipping Address;
+endif
+:Enter Billing Address;
+:Enter Credit Card Information;
+:Complete Purchase;
+else (no)
+stop
+endif
+
+stop
+@enduml

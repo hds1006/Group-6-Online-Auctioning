@@ -1,0 +1,27 @@
+@startuml
+
+package edu.sru.cpsc.webshopping.service {
+
+    class CarClubPostsService {
+        - carClubPostsRepository : CarClubPostsRepository
+
+        + CarClubPostsService(carClubPostsRepository: CarClubPostsRepository)
+        + getAllCarClubPosts() : List<CarClubPosts>
+        + getCarClubPostById(id: Long) : CarClubPosts
+        + createCarClubPost(carClubPost: CarClubPosts) : CarClubPosts
+        + findBySubgroupId(subgroupId: Long) : List<CarClubPosts>
+    }
+
+    class CarClubPostsRepository {
+    }
+}
+
+package edu.sru.cpsc.webshopping.domain.group {
+    class CarClubPosts {
+    }
+}
+
+CarClubPostsService --> "1" CarClubPostsRepository : uses
+CarClubPostsService --> "1" CarClubPosts : operates on
+
+@enduml

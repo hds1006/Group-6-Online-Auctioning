@@ -1,0 +1,52 @@
+@startuml
+class MarketListingPageController [[java:edu.sru.cpsc.webshopping.controller.purchase.MarketListingPageController]] {
+	~marketListingController: MarketListingDomainController
+	~shippingPage: PurchaseShippingAddressPageController
+	~heldListing: MarketListing
+	~userController: UserController
+	~widgetImageController: WidgetImageController
+	~emailController: EmailController
+	~purchaseController: ConfirmPurchasePageController
+	~ratingController: SellerRatingController
+	~userListController: UserListDomainController
+	~watchlistService: WatchlistService
+	~transController: TransactionController
+	~widgetController: WidgetController
+	-page: String
+	-tempWidget: Widget
+	~log: Logger
+	~entityManager: EntityManager
+	~statControl: StatisticsDomainController
+	-categoryService: CategoryService
+	-userService: UserService
+	-statController: StatisticsDomainController
+	-statisticsService: StatisticsService
+	-marketListingRepository: MarketListingRepository
+	-notificationRepository: NotificationRepository
+	-notificationService: NotificationService
+	-offerNotificationRepository: OfferNotificationRepository
+	-messagingController: MessagingController
+	-userRepository: UserRepository
+	+MarketListingPageController(marketListingController: MarketListingDomainController, transController: TransactionController, userController: UserController, shippingPage: PurchaseShippingAddressPageController, emailController: EmailController, widgetController: WidgetController, widgetImageController: WidgetImageController, ratingController: SellerRatingController, userListController: UserListDomainController, purchaseController: ConfirmPurchasePageController, watchlistService: WatchlistService)
+	+reloadModel(model: Model, user: User): void
+	+viewMarketListingPage(marketListingId: long, model: Model, principal: Principal): String
+	-getRemainingOffers(userId: long, listingId: long): int
+	-hasActiveOffer(userId: long, listingId: long): boolean
+	+showPurchasePage(listingId: Long, model: Model, principal: Principal): String
+	+attemptPurchase(listingId: Long, newTransaction: Transaction, result: BindingResult, model: Model, principal: Principal): String
+	+wishlistItem(marketListingId: long, model: Model, principal: Principal): String
+	+delWishlistItem(marketListingId: long, model: Model, principal: Principal): String
+	+getWishlist(principal: Principal): String
+	+returnToListings(): String
+	+editListing(marketListing: MarketListing, model: Model, principal: Principal): String
+	+deleteListing(id: long, model: Model, principal: Principal): String
+	+deleteListingAdmin(id: long, reason: String, model: Model, principal: Principal): String
+	+createCounterOffer(id: long, counterOfferAmount: String, principal: Principal): String
+	+rejectCounterOffer(id: long, principal: Principal): String
+	+acceptOffer(id: long, principal: Principal): String
+	+rejectOffer(id: long): String
+	+viewFriendProfilePage(username: String, model: Model, principal: Principal): String
+	+getPage(): String
+	+setPage(page: String): void
+}
+@enduml

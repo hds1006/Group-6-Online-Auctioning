@@ -1,0 +1,107 @@
+@startuml  
+title Car Club Operations via Social Page and Club Page  
+  
+actor       User                            as user  
+participant   "Social Page (Frontend)"              as socialPage  
+participant   "ClubPage (Frontend)"                as clubPage  
+participant   "CarClubController (Backend)"          as carClubController  
+participant   "CarClubService (Backend)"            as carClubService  
+participant   "SubGroupService (Backend)"            as subGroupService  
+participant   "SubSubGroupService (Backend)"          as subSubGroupService  
+participant   "ClubPostsService (Backend)"           as clubPostsService  
+participant   "SubSubGroupPostsService (Backend)"      as subSubGroupPostsService  
+participant   "SubCommentService (Backend)"          as subCommentService  
+database     "ClubRepository"                   as clubRepository  
+database     "UserRepository"                   as userRepository  
+database     "SubGroupRepository"                as subgroupRepository  
+database     "SubSubGroupRepository"              as subsubgroupRepository  
+database     "ClubPostsRepository"                as clubPostsRepository  
+database     "SubSubGroupPostsRepository"           as subSubGroupPostsRepository  
+database     "SubCommentRepository"               as subCommentRepository  
+  
+== Show Car Club Page ==  
+user        -> clubPage                     : Requests car club page (clubsId)  
+clubPage      -> carClubController               : showCarClub(clubsId, principal)  
+carClubController -> carClubService               : getClubsById(clubsId)  
+carClubService  -> clubRepository                 : findById(clubsId)  
+clubRepository  --> carClubService                : return Clubs  
+carClubController -> userRepository               : getUserByUsername(principal.getName())  
+userRepository  --> carClubController              : return User  
+carClubController -> subGroupService              : getSubgroupsByCarClub(clubsId)  
+subGroupService -> subgroupRepository              : findByCarClubId(clubsId)  
+subgroupRepository --> subGroupService             : return List<SubGroup>  
+carClubController -> clubPage                   : return view with car club, subgroups, and members  
+  
+== Create Subgroup ==  
+user        -> clubPage                     : Enters subgroup details  
+clubPage      -> carClubController               : createSubGroup(clubsId, subGroupName, subGroupDescription)  
+carClubController -> subGroupService              : getSubGroupById(clubsId)  
+subGroupService -> subgroupRepository              : save(subGroup)  
+subgroupRepository --> subGroupService             : Confirm subgroup saved  
+carClubController -> clubPage                   : Display success message and redirect  
+clubPage      --> user                       : User sees confirmation message  
+  
+== Create Post ==  
+user        -> clubPage                     : Enters post details  
+clubPage      -> carClubController               : createClubPost(clubPost)  
+carClubController -> clubPostsService              : createClubPost(clubPost)  
+clubPostsService -> clubPostsRepository             : save(clubPost)  
+clubPostsRepository --> clubPostsService            : Confirm post saved  
+carClubController --> clubPage                   : Display success message and redirect  
+clubPage      --> user                       : User sees confirmation message  
+  
+== Join/Leave Subgroup ==  
+user        -> clubPage                     : Joins subgroup  
+clubPage      -> carClubController               : joinSubGroup(subgroupId, principal)  
+carClubController -> subGroupService              : getSubGroupById(subgroupId)  
+subGroupService -> subgroupRepository              : findById(subgroupId)  
+subgroupRepository --> subGroupService             : return SubGroup  
+carClubController -> userRepository               : getUserByUsername(principal.getName())  
+userRepository  --> carClubController              : return User  
+carClubController -> subGroupService              : addMember(subGroup, user)  
+subGroupService -> subgroupRepository              : save(subGroup)  
+subgroupRepository --> subGroupService             : Confirm save  
+carClubController --> clubPage                   : Display success message and redirect  
+  
+== Create SubSubGroup ==  
+user        -> clubPage                     : Enters sub-subgroup details  
+clubPage      -> carClubController               : createSubSubGroup(subgroupId, subSubGroupName, subSubGroupDescription)  
+carClubController -> subGroupService              : getSubGroupById(subgroupId)  
+subGroupService -> subgroupRepository              : findById(subgroupId)  
+subgroupRepository --> subGroupService             : return SubGroup  
+carClubController -> subSubGroupService            : createSubSubGroup(subSubGroupName, subSubGroupDescription, currentUser)  
+subSubGroupService -> subsubgroupRepository          : save(subSubGroup)  
+subsubgroupRepository --> subSubGroupService         : Confirm sub-subgroup saved  
+carClubController --> clubPage                   : Display success message and redirect  
+clubPage      --> user                       : User sees confirmation message  
+  
+== Show SubSubGroup Page ==  
+user        -> clubPage                     : Requests sub-subgroup page (subSubGroupId)  
+clubPage      -> carClubController               : showCarClubSubSubGroups(subSubGroupId, principal)  
+carClubController -> subSubGroupService            : getSubSubGroupById(subSubGroupId)  
+subSubGroupService -> subsubgroupRepository          : findById(subSubGroupId)  
+subsubgroupRepository --> subSubGroupService         : return SubSubGroup  
+carClubController -> userRepository               : getUserByUsername(principal.getName())  
+userRepository  --> carClubController              : return User  
+carClubController -> clubPage                   : return view with sub-subgroup, members, and posts  
+  
+== Create Post in SubSubGroup ==  
+  
+user        -> clubPage                     : Enters post details for sub-subgroup  
+clubPage      -> carClubController               : createSubSubGroupPost(subSubGroupPost)  
+carClubController -> subSubGroupPostsService         : createSubSubGroupPost(subSubGroupPost)  
+subSubGroupPostsService -> subSubGroupPostsRepository   : save(subSubGroupPost)  
+subSubGroupPostsRepository --> subSubGroupPostsService  : Confirm post saved  
+carClubController --> clubPage                   : Display success message and redirect  
+clubPage      --> user                       : User sees confirmation message  
+  
+== Add Comment to Post in SubSubGroup ==  
+user        -> clubPage                     : Enters comment details for post in sub-subgroup  
+clubPage      -> carClubController               : addSubComment(content, postId, user)  
+carClubController -> subCommentService             : createComment(subComment)  
+subCommentService -> subCommentRepository           : save(subComment)  
+subCommentRepository --> subCommentService          : Confirm comment saved  
+carClubController --> clubPage                   : Display success message and redirect  
+clubPage      --> user                       : User sees confirmation message  
+  
+@enduml

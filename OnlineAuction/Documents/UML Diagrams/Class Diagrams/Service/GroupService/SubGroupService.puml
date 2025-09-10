@@ -1,0 +1,65 @@
+@startuml  
+class SubGroupService {  
+  - subgroupRepository: SubGroupRepository  
+  - clubsRepository: ClubsRepository  
+  + getSubgroupsByCarClub(clubsId: Long): List<SubGroup>  
+  + getSubGroupById(id: Long): SubGroup  
+  + saveSubGroup(subgroup: SubGroup): SubGroup  
+  + searchSubGroups(query: String): List<SubGroup>  
+  + getAllSubGroups(): List<SubGroup>  
+  + deleteSubGroup(subgroup: SubGroup): void  
+}  
+  
+class SubGroupRepository {  
+  + findByClubsId(clubsId: Long): List<SubGroup>  
+  + findById(id: Long): Optional<SubGroup>  
+  + save(subgroup: SubGroup): SubGroup  
+  + findByNameContainingIgnoreCase(query: String): List<SubGroup>  
+  + findAll(): List<SubGroup>  
+  + delete(subgroup: SubGroup): void  
+}  
+  
+class ClubsRepository {  
+  + findById(id: Long): Optional<Clubs>  
+}  
+  
+class SubGroup {  
+  - id: Long  
+  - name: String  
+  - description: String  
+  - owner: User  
+  - members: Set<User>  
+  + getId(): Long  
+  + getName(): String  
+  + getDescription(): String  
+  + getOwner(): User  
+  + getMembers(): Set<User>  
+}  
+  
+class Clubs {  
+  - id: Long  
+  - name: String  
+  - description: String  
+  - owner: User  
+  - members: Set<User>  
+  + getId(): Long  
+  + getName(): String  
+  + getDescription(): String  
+  + getOwner(): User  
+  + getMembers(): Set<User>  
+}  
+  
+class User {  
+  - id: Long  
+  - username: String  
+  - email: String  
+  + getId(): Long  
+  + getUsername(): String  
+  + getEmail(): String  
+}  
+  
+SubGroupService --> SubGroupRepository : uses  
+SubGroupService --> ClubsRepository : uses  
+SubGroupRepository --> SubGroup : returns  
+ClubsRepository --> Clubs : returns  
+@enduml

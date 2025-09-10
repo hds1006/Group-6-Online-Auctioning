@@ -1,0 +1,15 @@
+@startuml
+title Use Case Diagram for Sub Comments
+
+actor User
+
+rectangle "SubComment" {
+    usecase "Add Sub Comment" as UC1
+    usecase "View Sub Comment" as UC2
+}
+
+User --> UC1 : "Submit Sub Comment"
+User --> UC2 : "View Sub Comments"
+
+
+@enduml

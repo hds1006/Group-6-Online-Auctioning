@@ -1,0 +1,27 @@
+@startuml
+[*] --> Created
+
+state Created {
+    [*] --> Active
+    Active --> Inactive : Set as Inactive
+    Inactive --> Active : Reactivate
+    Active --> Closed : Mark as Closed
+    Closed --> [*]
+}
+
+state Active {
+    Active --> MemberAdded : Add member
+    Active --> MemberRemoved : Remove member
+}
+
+state Inactive {
+    Inactive --> Active : Reactivate
+}
+
+state Closed {
+    Closed --> [*]
+}
+
+Active --> [*] : Delete SubSubGroup
+
+@enduml

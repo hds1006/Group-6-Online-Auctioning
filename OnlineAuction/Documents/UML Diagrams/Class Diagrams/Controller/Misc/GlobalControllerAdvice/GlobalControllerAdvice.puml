@@ -1,0 +1,8 @@
+@startuml
+class GlobalControllerAdvice [[java:edu.sru.cpsc.webshopping.controller.GlobalControllerAdvice]] {
+	-userService: UserService
+	-offerNotificationService: OfferNotificationService
+	+getActiveOffers(principal: Principal): List<OfferNotification>
+	+getNotificationCount(principal: Principal): int
+}
+@enduml

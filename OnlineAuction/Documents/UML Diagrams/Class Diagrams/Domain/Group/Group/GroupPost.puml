@@ -1,0 +1,55 @@
+@startuml
+
+' Class Definitions
+class ClubPosts {
+    + id: Long
+    + title: String
+    + content: String
+    + subgroupId: Long
+    + user: User
+    + comments: Set<ClubComments>
+    + getId(): Long
+    + setId(id: Long): void
+    + getTitle(): String
+    + setTitle(title: String): void
+    + getContent(): String
+    + setContent(content: String): void
+    + getSubgroupId(): Long
+    + setSubgroupId(subgroupId: Long): void
+    + getUser(): User
+    + setUser(user: User): void
+    + getComments(): Set<ClubComments>
+    + setComments(comments: Set<ClubComments>): void
+}
+
+class User {
+    + id: Long
+    + username: String
+    + email: String
+    + getId(): Long
+    + getUsername(): String
+    + getEmail(): String
+}
+
+class ClubComments {
+    + id: Long
+    + content: String
+    + post: ClubPosts
+    + user: User
+    + getId(): Long
+    + setId(id: Long): void
+    + getContent(): String
+    + setContent(content: String): void
+    + getPost(): ClubPosts
+    + setPost(post: ClubPosts): void
+    + getUser(): User
+    + setUser(user: User): void
+}
+
+' Relationships
+ClubPosts --> User : belongs to
+ClubPosts --> ClubComments : has many
+ClubComments --> ClubPosts : belongs to
+ClubComments --> User : belongs to
+
+@enduml

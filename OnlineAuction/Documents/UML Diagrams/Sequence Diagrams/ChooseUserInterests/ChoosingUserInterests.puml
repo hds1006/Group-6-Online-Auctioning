@@ -1,0 +1,23 @@
+ @startuml
+ participant User
+ participant UserInterface
+
+    User->>UserInterface: Load user interests page
+    activate UserInterface
+    UserInterface-->>User: Display user interests page with current selections
+    deactivate UserInterface
+
+    loop Until user submits form
+        User->>UserInterface: Click interest button
+        activate UserInterface
+        UserInterface->>UserInterface: Toggle button selection
+        UserInterface->>UserInterface: Update hidden input value
+        UserInterface-->>User: Display updated button state
+        deactivate UserInterface
+    end
+
+    User->>UserInterface: Click "Save" button
+    activate UserInterface
+    UserInterface-->>User: Display user interests page with success message
+    deactivate UserInterface
+    @enduml

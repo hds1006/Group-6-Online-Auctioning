@@ -1,0 +1,49 @@
+@startuml Filter State Chart
+
+' State Diagram
+skinparam state {
+  BackgroundColor<<Initial>> LightGreen
+  BackgroundColor<<Final>> Pink
+}
+
+[*] --> BrowseWidgetsState : GET /BrowseWidgetsButton
+
+state BrowseWidgetsState {
+    [*] --> UnfilteredView : pageNumber
+    UnfilteredView --> FilteredView : /page/{pageNumber}/attributeFiltered
+    FilteredView --> FilteredView : Update Filters
+    FilteredView --> UnfilteredView : Clear Filters
+    
+    state UnfilteredView {
+        state "allMarketListings (unfiltered)" as AllListings
+        state "Default attributeValues" as DefaultOptions {
+            state "yearValues"
+            state "conditionValues"
+            state "makeValues"
+            state "modelValues"
+            state "keywordValues"
+            state "engineValues"
+        }
+    }
+    
+    state FilteredView {
+        state "filteredMarketListings" as FilteredListings
+        state "updatedAttributeValues" as UpdateFilters {
+            state "selectedFilters" as Filters {
+                state year
+                state condition
+                state make
+                state model_car
+                state keywords
+                state engine
+            }
+            state "changedAttribute"
+        }
+        FilteredListings --> UpdateFilters : Filter Value Changed
+        UpdateFilters --> FilteredListings : marketListingsPage Updated
+    }
+}
+
+BrowseWidgetsState --> [*] : Leave Page
+
+@enduml

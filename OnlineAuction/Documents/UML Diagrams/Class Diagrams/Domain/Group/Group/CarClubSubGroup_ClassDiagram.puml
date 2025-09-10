@@ -1,0 +1,51 @@
+@startuml
+
+package edu.sru.cpsc.webshopping.domain.group {
+
+    class SubGroup {
+        - id : Long
+        - name : String
+        - description : String
+        - creationDate : LocalDateTime
+        - members : Set<User>
+        - carClub : CarClub
+        - owner : User
+
+        + getId() : Long
+        + setId(id : Long) : void
+        + getName() : String
+        + setName(name : String) : void
+        + getDescription() : String
+        + setDescription(description : String) : void
+        + getCreationDate() : LocalDateTime
+        + setCreationDate(creationDate : LocalDateTime) : void
+        + getMembers() : Set<User>
+        + setMembers(members : Set<User>) : void
+        + addMember(user : User) : void
+        + removeMember(user : User) : void
+        + isMember(user : User) : boolean
+        + getCarClub() : CarClub
+        + setCarClub(carClub : CarClub) : void
+        + getOwner() : User
+        + setOwner(owner : User) : void
+        + toString() : String
+        + SubGroup()
+        + SubGroup(name : String, description : String, carClub : CarClub, owner : User, creationDate : LocalDateTime)
+    }
+}
+
+package edu.sru.cpsc.webshopping.domain.user {
+    class User {
+    }
+}
+
+package edu.sru.cpsc.webshopping.domain.group {
+    class CarClub {
+    }
+}
+
+SubGroup "1" -- "1" CarClub : carClub
+SubGroup "1" -- "1" User : owner
+SubGroup "0..*" -- "0..*" User : members
+
+@enduml

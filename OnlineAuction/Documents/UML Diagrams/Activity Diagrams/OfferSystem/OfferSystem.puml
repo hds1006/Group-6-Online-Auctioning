@@ -1,0 +1,96 @@
+@startuml
+title Offer System Activity Diagram with Notifications
+
+|Buyer|
+start
+:Submit Initial Offer;
+note right: Offer #1 of 3
+
+|System|
+:Notify Seller of New Offer;
+
+|Seller|
+if (Accept?) then (yes)
+  :Accept Offer;
+  |System|
+  :Notify Buyer of Acceptance;
+else (no)
+  :Send Counter Offer;
+  |System|
+  :Notify Buyer of Counter Offer;
+endif
+
+|Buyer|
+if (Counter Received?) then (yes)
+  if (Accept Counter?) then (yes)
+    :Accept Offer;
+    |System|
+    :Notify Seller of Acceptance;
+  else (no)
+    :Send Counter Offer;
+    note right: Offer #2 of 3
+    |System|
+    :Notify Seller of Counter Offer;
+  endif
+endif
+
+|Seller|
+if (Counter Received?) then (yes)
+  if (Accept Counter?) then (yes)
+    :Accept Offer;
+    |System|
+    :Notify Buyer of Acceptance;
+  else (no)
+    :Send Counter Offer;
+    |System|
+    :Notify Buyer of Counter Offer;
+  endif
+endif
+
+|Buyer|
+if (Counter Received?) then (yes)
+  if (Accept Counter?) then (yes)
+    :Accept Offer;
+    |System|
+    :Notify Seller of Acceptance;
+  else (no)
+    :Send Final Counter Offer;
+    note right: Offer #3 of 3
+    |System|
+    :Notify Seller of Final Offer;
+  endif
+endif
+
+|Seller|
+if (Final Counter Received?) then (yes)
+  if (Accept Final Counter?) then (yes)
+    :Accept Offer;
+    |System|
+    :Notify Buyer of Acceptance;
+  else (no)
+    :Reject Offer;
+    |System|
+    :Notify Buyer of Rejection;
+    stop
+  endif
+endif
+
+|System|
+:Start Payment Timer;
+if (Payment Received within 24h?) then (yes)
+  :Complete Transaction;
+  :Notify Both Parties of Completion;
+else (no)
+  :Cancel Transaction;
+  :Notify Both Parties of Expiration;
+endif
+
+note right
+  - Entire process must complete within 24h
+  - Buyer has 3 total offers (initial + counters)
+  - Payment must be made immediately upon acceptance
+  - Notifications sent for all state changes
+end note
+
+stop
+@enduml

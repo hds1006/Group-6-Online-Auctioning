@@ -1,0 +1,38 @@
+@startuml
+
+package edu.sru.cpsc.webshopping.service {
+
+    class CarClubService {
+        - carClubRepository : CarClubRepository
+        - userRepository : UserRepository
+        - userService : UserService
+
+        + CarClubService(carClubRepository: CarClubRepository, userRepository: UserRepository)
+        + getAllCarClubsForUser(user: User) : List<CarClub>
+        + getCarClubById(id: Long) : CarClub
+        + isUserMemberOfClub(user: User, carClub: CarClub) : boolean
+        + addMemberToClub(user: User, carClub: CarClub) : boolean
+        + saveCarClub(carClub: CarClub) : CarClub
+        + createCarClub(carBrand: String, description: String, ownerId: Long, currentUser: User) : CarClub
+        + joinCarClub(carClubId: Long, user: User) : void
+        + isUserMember(carClubId: Long, user: User) : boolean
+    }
+
+    class CarClubRepository {
+    }
+
+    class UserRepository {
+    }
+
+    class User {
+    }
+
+    class UserService {
+    }
+
+    CarClubService --> "1" CarClubRepository : uses
+    CarClubService --> "1" UserRepository : uses
+    CarClubService --> "1" UserService : uses
+}
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml  
+class ClubComments {  
+  - id: Long  
+  - content: String  
+  - post_id: Long  
+  - user: User  
+  - post: ClubPosts  
+  + getId(): Long  
+  + setId(id: Long): void  
+  + getContent(): String  
+  + setContent(content: String): void  
+  + getPostId(): Long  
+  + setPostId(post_id: Long): void  
+  + getUser(): User  
+  + setUser(user: User): void  
+}  
+  
+class User {  
+  - id: Long  
+  - username: String  
+  - email: String  
+  + getId(): Long  
+  + getUsername(): String  
+  + getEmail(): String  
+}  
+  
+class ClubPosts {  
+  - id: Long  
+  - content: String  
+  - subgroupId: Long  
+  + getId(): Long  
+  + getContent(): String  
+  + getSubgroupId(): Long  
+}  
+  
+ClubComments --> User : has user  
+ClubComments --> ClubPosts : has post  
+@enduml

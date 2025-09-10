@@ -1,0 +1,38 @@
+@startuml
+class CarClubController [[java:edu.sru.cpsc.webshopping.controller.CarClubController]] {
+	~log: Logger
+	-productsRepository: ProductsRepository
+	-userRepository: UserRepository
+	-carClubService: ClubsService
+	-subgroupService: SubGroupService
+	-clubsRepository: ClubsRepository
+	-subgroupRepository: SubGroupRepository
+	-userService: UserService
+	-carClubPostsService: ClubPostsService
+	-carClubCommentsService: CarClubCommentsService
+	-clubCommentsRepository: ClubCommentsRepository
+	-subSubGroupService: SubSubGroupService
+	-subSubGroupPostsService: SubSubGroupPostsService
+	-subCommentService: SubCommentService
+	-messagingTemplate: SimpMessagingTemplate
+	+createCarClub(carBrand: String, groupDescription: String, principal: Principal, redirectAttributes: RedirectAttributes): String
+	+showCarClub(clubsId: Long, model: Model, principal: Principal): String
+	+showCarClubById(id: Long, model: Model, principal: Principal): String
+	+createSubGroup(clubsId: Long, subGroupName: String, subGroupDescription: String, subGroupImage: MultipartFile, model: Model, principal: Principal): String
+	+showCarClubSubGroups(subgroupId: Long, model: Model, principal: Principal): String
+	+showSubGroup(subgroupId: Long, searchQuery: String, model: Model, principal: Principal): String
+	+joinSubGroup(subgroupId: Long, principal: Principal, redirectAttributes: RedirectAttributes): String
+	+leaveSubGroup(subgroupId: Long, principal: Principal, redirectAttributes: RedirectAttributes): String
+	+getAllCarClubPosts(carClubPost: ClubPosts, principal: Principal, model: Model): String
+	+getCarClubPostById(id: Long, model: Model): String
+	+createSubSubGroup(subgroupId: Long, subSubGroupName: String, subSubGroupDescription: String, model: Model, principal: Principal): String
+	+showSubSubGroup(subsubgroupId: Long, searchQuery: String, model: Model, principal: Principal): String
+	+showCarClubSubSubGroups(subSubGroupId: Long, model: Model, principal: Principal): String
+	+joinSubSubGroup(subSubGroupId: Long, principal: Principal, redirectAttributes: RedirectAttributes): String
+	+leaveSubSubGroup(subSubGroupId: Long, principal: Principal, redirectAttributes: RedirectAttributes): String
+	+addComment(content: String, postId: Long, user: User, model: Model, principal: Principal): String
+	+createSubSubGroupPost(subSubGroupPost: SubSubGroupPosts, subsubgroupId: Long, principal: Principal, model: Model): String
+	+getSubSubGroupPostById(id: Long, model: Model): String
+	+addSubComment(content: String, postId: Long, user: User, model: Model, principal: Principal): String
+}
+@enduml

@@ -1,0 +1,25 @@
+@startuml
+actor User
+participant SubSubGroup
+participant SubGroup
+participant Clubs
+
+== Create SubSubGroup ==
+
+User -> SubGroup: createSubSubGroup(name, description, owner)
+SubGroup -> Clubs: getClubs()
+SubGroup -> SubSubGroup: new SubSubGroup(name, description, subGroup, clubs, owner, LocalDateTime.now())
+SubGroup -> SubGroup: add SubSubGroup to subGroups
+SubSubGroup -> SubGroup: return new SubSubGroup
+
+== Add Member to SubSubGroup ==
+
+User -> SubSubGroup: addMember(user)
+SubSubGroup -> SubSubGroup: add user to members
+
+== Remove Member from SubSubGroup ==
+
+User -> SubSubGroup: removeMember(user)
+SubSubGroup -> SubSubGroup: remove user from members
+
+@enduml

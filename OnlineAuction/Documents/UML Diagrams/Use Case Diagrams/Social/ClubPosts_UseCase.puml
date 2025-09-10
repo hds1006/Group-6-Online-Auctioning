@@ -1,0 +1,39 @@
+@startuml
+title Use Case Diagram for Club Posts
+
+actor User
+actor Admin
+
+rectangle "Club Post Management" {
+    User --> (Create Post)
+    User --> (View Post)
+    User --> (Comment on Post)
+    User --> (View Comments)
+    
+    Admin --> (Delete Post)
+}
+
+note right of (Create Post)
+  A user can create a new post
+  within a specific subgroup.
+end note
+
+note right of (View Post)
+  A user can view the post's
+  title, content, and details.
+end note
+
+note right of (Comment on Post)
+  Users can comment on posts
+  to engage with other members.
+end note
+
+note right of (Delete Post)
+  Admin or post creator can delete
+  posts to remove unwanted content.
+end note
+
+note right of (View Comments)
+  Users can view comments posted
+  under a specific post.
+end note

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Browse</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link th:href="@{/styles/button.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/landing.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/browse.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/employee_page.css}" rel="stylesheet"/>
+
+    <!-- Font import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <style type="text/css">
+        th {
+            border: 2px solid #000000;
+            background-color: #e9ecef;
+            height: 50px;
+        }
+
+        td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 2px solid #000000;
+            height: 40px;
+            margin-bottom: .5em;
+        }
+
+        table.center {
+            margin: 20px;
+        }
+
+        .search-bar-container {
+            margin-top: 20px;
+        }
+
+        .posts-container {
+            max-height: 300px; 
+            overflow-y: auto;  
+            border: 1px solid #dee2e6; 
+            padding: 10px; 
+            border-radius: 5px; 
+            background-color: #f8f9fa; 
+        }
+
+        .post-box {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .post-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .post-content {
+            font-size: 1.1rem;
+            color: #555;
+            margin-top: 10px;
+        }
+
+        .post-author {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .btn-primary, .btn-success, .btn-danger {
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: bold;
+        }
+
+        .btn-success:hover, .btn-danger:hover, .btn-primary:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group select {
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .container {
+            margin-top: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .page-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .section-header {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .collapse-btn {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .members-list {
+            margin-top: 20px;
+        }
+
+        .info-box {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .info-box p {
+            margin-bottom: 10px;
+        }
+
+        .section-divider {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="~{header :: header}"></div>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Group Info Box: Description and Owner -->
+                    <div class="info-box">
+                        <h1 class="card-title" th:text="${subgroup.name}">Subgroup Name</h1>
+                        <p class="card-text" th:text="${subgroup.description}">Subgroup Description</p>
+                        <p><strong>Owner:</strong> <span th:text="${subgroup.owner.username}">Owner's Name</span></p>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="section-divider"></div>
+
+                    <!-- Join/Leave Group Section -->
+                    <div class="join-leave-buttons">
+                        <div th:if="${!isMember}" class="join-group">
+                            <form th:action="@{/joinSubGroup}" method="post">
+                                <input type="hidden" name="subgroupId" th:value="${subgroup.id}">
+                                <button type="submit" class="btn btn-success" onclick="showContent()">Join Group</button>
+                            </form>
+                        </div>
+                        <div th:if="${isMember}" class="leave-group">
+                            <form th:action="@{/leaveSubGroup}" method="post">
+                                <input type="hidden" name="subgroupId" th:value="${subgroup.id}">
+                                <button type="submit" class="btn btn-danger">Leave Group</button>
+                            </form>
+                            <div th:if="${successMessage}" class="alert alert-success mt-3" role="alert" th:text="${successMessage}"></div>
+                        </div>
+                    </div>
+
+                    <!-- Content under isMember condition -->
+                    <div th:if="${isMember}" class="hidden-content" id="hidden-content">
+                        <div class="posts-container">
+                            <h2 class="section-header">Posts</h2>
+                            <div th:each="post : ${posts}" class="post-box">
+                                <h3 class="post-title" th:text="${post.title}">Post Title</h3>
+                                <p class="post-content" th:text="${post.content}">Post Content</p>
+                                <p class="post-author"><strong>Posted by: </strong><span th:text="${post.user.username}">Author</span></p>
+
+                                <!-- Comments Section -->
+                                <div class="comments-container mt-4">
+                                    <h6>Comments:</h6>
+                                    <div th:each="comment : ${post.comments}">
+                                        <p><strong th:text="${comment.user.username}">Username</strong>: <span th:text="${comment.content}">Comment Content</span></p>
+                                    </div>
+
+                                    <!-- Add Comment Form -->
+                                    <form th:action="@{/addComment}" method="post">
+                                        <input type="hidden" name="postId" th:value="${post.id}">
+                                        <textarea name="content" class="form-control" placeholder="Write your comment..." required></textarea>
+                                        <button type="submit" class="btn btn-primary mt-2">Post Comment</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Create Post Button and Form -->
+                        <button id="create-post-btn" class="btn btn-primary collapse-btn" data-bs-toggle="collapse" data-bs-target="#create-post-form" onclick="hideButton()">Create Post</button>
+                        <div class="collapse mt-3" id="create-post-form">
+                            <form th:action="@{/carClubPosts}" method="post">
+                                <input type="hidden" name="subgroupId" th:value="${subgroup.id}">
+                                <input type="text" name="title" placeholder="Post title" required class="form-control mt-2">
+                                <textarea name="content" placeholder="Post content" required class="form-control mt-2"></textarea>
+                                <button type="submit" class="btn btn-primary mt-2">Post</button>
+                            </form>
+                        </div>
+
+                        <!-- SubSubGroup Section -->
+<form th:action="@{/subsubgroup}" method="get">
+    <div class="subsubgroups-list">
+        <h5 class="section-header" th:text="${subgroup.name} + 'Sub-Groups'">Subgroup Groups</h5>
+        
+        <!-- Search for Groups Button -->
+        <button id="search-groups-btn" class="btn btn-primary" onclick="toggleSearchBox()">Search for Sub-Groups</button>
+
+        <!-- Search Box (Initially Hidden) -->
+        <div id="search-box" class="mt-3" style="display: none;">
+            <input type="text" id="subsubgroupSearchInput" name="searchQuery" class="form-control" 
+                   th:placeholder="'Search for ' + ${subgroup.name} + ' Groups'" th:value="${searchQuery}" oninput="filterSubSubGroups()">
+            <button type="button" class="btn btn-primary mt-2" onclick="filterSubSubGroups()">Search</button>
+        </div>
+
+        <div class="subgroups-dropdown mb-3">
+            <select class="form-select" id="subsubgroupDropdown" name="subsubgroupId" required>
+                <option value="" disabled selected th:text="'Select Existing ' + ${subgroup.name} + ' Group'">Select a SubSubGroup</option>
+                <option th:each="subsubgroup : ${subsubgroups}" th:value="${subsubgroup.id}" th:text="${subsubgroup.name}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" th:text="'View ' + ${subgroup.name} + 'Sub-Group'">View SubSubGroup</button>
+    </div>
+</form>
+
+                        <!-- Create SubSubGroup -->
+                        <div class="mb-2">
+                            <button id="create-subsubgroup-btn" class="btn btn-primary collapse-btn" data-bs-toggle="collapse" 
+                                    data-bs-target="#create-subsubgroup-form" onclick="hideSubsubgroupButton()" th:text="'Create your own ' + ${subgroup.name} + ' Sub-Group'">Create SubGroup</button>
+                        </div>
+                        <div class="collapse mt-3" id="create-subsubgroup-form">
+                            <form th:action="@{/createSubSubGroup}" method="post">
+                                <input type="hidden" name="subgroupId" th:value="${subgroup.id}">
+                                <input type="text" name="subSubGroupName" placeholder="SubSubGroup Name" required class="form-control mt-2">
+                                <textarea name="subSubGroupDescription" placeholder="SubSubGroup Description" required class="form-control mt-2"></textarea>
+                                <button type="submit" class="btn btn-primary mt-2">Create SubGroup</button>
+                            </form>
+                        </div>
+
+                        <!-- Members Dropdown -->
+                        <div class="members-list">
+                            <h5 class="section-header">Members:</h5>
+                            <select class="form-select" id="memberDropdown">
+                                <option value="" disabled selected>See All Members</option>
+                                <option th:each="member : ${members}" th:value="${member.id}" th:text="${member.username}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="section-divider"></div>
+
+                    <!-- Back to Club Section -->
+                    <div class="mt-4">
+                        <a th:href="@{/carClub(clubsId=${carClub.id})}" class="btn btn-primary">Back to Club</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    function showContent() {
+        const hiddenContent = document.getElementById("hidden-content");
+        hiddenContent.style.display = "block"; 
+    }
+
+    function hideButton() {
+        const button = document.getElementById('create-post-btn');
+        button.style.display = 'none';
+    }
+
+    function hideSubsubgroupButton() {
+        const button = document.getElementById('create-subsubgroup-btn');
+        button.style.display = 'none';
+    }
+    
+    function filterSubSubGroups() {
+        var searchInput = document.getElementById("subsubgroupSearchInput");
+        var searchQuery = searchInput.value.toLowerCase();
+        var options = document.getElementById("subsubgroupDropdown").options;
+
+        for (var i = 0; i < options.length; i++) {
+            var optionText = options[i].text.toLowerCase();
+            if (optionText.includes(searchQuery)) {
+                options[i].style.display = "block";  
+            } else {
+                options[i].style.display = "none";  
+            }
+        }
+    }
+    
+    function toggleSearchBox() {
+        var searchBox = document.getElementById("search-box");
+        if (searchBox.style.display === "none" || searchBox.style.display === "") {
+            searchBox.style.display = "block";
+        } else {
+            searchBox.style.display = "none";
+        }
+    }
+    
+    /*
+    var socket = new SockJS('/ws');
+    var stompClient = Stomp.over(socket);
+    
+    stompClient.connect({}, function(frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/posts', function(messageOutput) {
+            var newPost = JSON.parse(messageOutput.body);
+            addPostToPage(newPost); // Add the new post to the page dynamically
+        });
+    });
+
+    function addPostToPage(post) {
+        var postsContainer = document.getElementById('posts-container');
+        var postElement = document.createElement('div');
+        postElement.classList.add('post-box');
+        postElement.innerHTML = `
+            <h3 class="post-title">${post.title}</h3>
+            <p class="post-content">${post.content}</p>
+            <p class="post-author"><strong>Posted by:</strong> ${post.user.username}</p>
+        `;
+        postsContainer.appendChild(postElement); 
+    }
+
+    function sendPost() {
+        var postData = {
+            title: 'Post Title',
+            content: 'Post Content',
+            user: { username: 'User1' }
+        };
+        stompClient.send("/app/post", {}, JSON.stringify(postData));
+    }
+    */
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdown = document.getElementById('subsubgroupDropdown');
+        
+        const options = Array.from(dropdown.options);
+        
+        const placeholderOption = options.shift();
+        
+        options.sort((a, b) => a.text.localeCompare(b.text));
+        
+        dropdown.innerHTML = '';
+        
+        dropdown.appendChild(placeholderOption);
+        
+        options.forEach(option => dropdown.appendChild(option));
+    });
+    
+</script>
+
+</body>
+</html>

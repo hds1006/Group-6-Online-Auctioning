@@ -1,0 +1,16 @@
+@startuml
+title Use Case Diagram for Club Comments
+
+actor User
+
+rectangle "ClubComments" {
+    usecase "Add Comment" as UC1
+    usecase "View Comment" as UC2
+
+}
+
+User --> UC1 : "Submit Comment"
+User --> UC2 : "View Comments"
+
+
+@enduml

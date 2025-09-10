@@ -1,0 +1,23 @@
+@startuml
+
+entity User {
+  * id: Long
+  username: String
+  email: String
+  password: String
+}
+
+entity UserInterests {
+  * id: Long
+  * userId: Long
+  home: Boolean
+  auto: Boolean
+  clothing: Boolean
+  sports: Boolean
+  art: Boolean
+  cosmetics: Boolean
+}
+
+User ||--o{ UserInterests
+
+@enduml

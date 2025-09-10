@@ -1,0 +1,21 @@
+@startuml
+
+database Database
+control UserInterestService 
+entity UserInterests
+entity MarketListing
+
+UserInterestService -> Database: save(UserInterests)
+UserInterestService <- Database: findByUserId(Long)
+
+UserInterestService -> UserInterests: getRecommendedProducts(UserInterests)
+UserInterestService -> MarketListing: getCategory()
+UserInterestService <- Database: findAll()
+
+UserInterestService -> UserInterests: getRecommendedProductsByPrice(UserInterests, BigDecimal)
+UserInterestService -> MarketListing: getPricePerItem()
+
+UserInterestService -> Database: findByCategoryInAndPageViewsGreaterThan(List<String>, int)
+UserInterestService <- MarketListing: getPopularItems(List<String>, int)
+
+@enduml

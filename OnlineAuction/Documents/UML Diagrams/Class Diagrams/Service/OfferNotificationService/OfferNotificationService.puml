@@ -1,0 +1,20 @@
+@startuml
+class OfferNotificationService [[java:edu.sru.cpsc.webshopping.service.OfferNotificationService]] {
+	-offerNotificationRepository: OfferNotificationRepository
+	-marketListingRepository: MarketListingRepository
+	-userService: UserService
+	+getActiveOffers(userId: Long): List<OfferNotification>
+	+getUnreadOfferCount(userId: Long): int
+	+createOffer(buyerUsername: String, buyerId: long, amount: String, listingId: long): OfferNotification
+	+createCounterOffer(originalOffer: OfferNotification, counterOfferAmount: String): void
+	+markOfferAsViewed(offerId: Long, userId: Long): void
+	+markAllOffersAsViewed(userId: Long): void
+	+acceptOffer(offerId: Long): void
+	+rejectOffer(offerId: Long): void
+	+getOffersForListing(listingId: Long): List<OfferNotification>
+	+getUserOffersForListing(userId: Long, listingId: Long): List<OfferNotification>
+	+canMakeOffer(userId: Long, listingId: Long): boolean
+	+getRemainingOfferCount(userId: Long, listingId: Long): int
+	+isOfferExpired(offer: OfferNotification): boolean
+}
+@enduml

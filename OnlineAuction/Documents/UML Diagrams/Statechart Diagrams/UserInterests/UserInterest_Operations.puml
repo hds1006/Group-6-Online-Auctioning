@@ -1,0 +1,15 @@
+@startuml
+[*] --> UserInterestsPage
+
+    state UserInterestsPage {
+        [*] --> DisplayInterests
+
+        DisplayInterests --> InterestSelected: User clicks interest button
+        InterestSelected --> DisplayInterests: Update button state and hidden input value
+
+        DisplayInterests --> SaveInterests: User clicks "Save" button
+        SaveInterests --> DisplayInterests: Display success message
+    }
+
+    UserInterestsPage --> [*]
+@enduml

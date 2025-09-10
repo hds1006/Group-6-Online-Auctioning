@@ -1,0 +1,47 @@
+@startuml
+
+package edu.sru.cpsc.webshopping.domain.group {
+
+    class Clubs {
+        - id : Long
+        - clubName : String
+        - groupDescription : String
+        - members : Set<User>
+        - creationDate : LocalDateTime
+        - imageUrl : String
+        - SubGroups : Set<SubGroup>
+
+        + getId() : Long
+        + setId(id : Long) : void
+        + getClubName() : String
+        + setClubName(clubName : String) : void
+        + getGroupDescription() : String
+        + setGroupDescription(groupDescription : String) : void
+        + getCreationDate() : LocalDateTime
+        + setCreationDate(creationDate : LocalDateTime) : void
+        + getMembers() : Set<User>
+        + setMembers(members : Set<User>) : void
+        + addMember(user : User) : void
+        + removeMember(user : User) : void
+        + isMember(user : User) : boolean
+        + getImageUrl() : String
+        + setImageUrl(imageUrl : String) : void
+        + getSubGroups() : Set<SubGroup>
+        + setSubGroups(SubGroups : Set<SubGroup>) : void
+        + createSubGroup(name : String, description : String, currentUser : User) : SubGroup
+        + toString() : String
+        + Clubs()
+        + Clubs(clubName : String, groupDescription : String, creationDate : LocalDateTime, imageUrl : String)
+    }
+}
+
+package edu.sru.cpsc.webshopping.domain.user {
+    class User {
+        // User properties and methods can be defined here
+    }
+}
+
+Clubs "1" -- "1" User : owner
+Clubs "0..*" -- "0..*" User : members
+
+@enduml

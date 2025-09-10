@@ -1,0 +1,75 @@
+@startuml Filter Activity Diagram
+
+|User|
+start
+:Visit /BrowseWidgetsButton/page/{pageNumber};
+
+|#AntiqueWhite|LandingPageController|
+:attributeFilteredBrowsePage();
+:getAllMarketListings().clear();
+:getAllWidgetImages().clear();
+:getAllEncodedImages().clear();
+
+|User|
+if (Apply Filters?) then (yes)
+    :Set filter parameters
+    (year, condition, make,
+    model_car, keywords, engine);
+    
+    |LandingPageController|
+    :Process selectedFilters;
+    
+    |#LightBlue|MarketListingService|
+    :findPageWithAttributeFilter(
+        pageNum,
+        year, condition, make,
+        model_car, keywords, engine);
+    :createAttributePredicate()
+        for each filter;
+    :marketListingRepository.findAll(
+        spec, pageable);
+    
+    |LandingPageController|
+    :processSearchResults();
+    
+    if (getAllMarketListings().size() > 0) then (yes)
+        :setFilterAttributes(
+            model,
+            updatedAttributeValues,
+            selectedFilters);
+        
+        |User|
+        if (Modify Filters?) then (yes)
+            :Update filter value;
+            
+            |MarketListingService|
+            :getUpdatedAttributeValues(
+                selectedFilters,
+                changedAttribute);
+            :getDependentAttributeValues(
+                selectedFilters);
+            
+            |LandingPageController|
+            :Update model attributes;
+            goto setFilterAttributes;
+        else (no)
+        endif
+        
+    else (no)
+        :Display empty results;
+        :Maintain current filters;
+    endif
+    
+else (no)
+    |LandingPageController|
+    :browseWidgetsButton(
+        model, principal, 1);
+endif
+
+|User|
+if (Continue Browsing?) then (yes)
+    :Browse Results;
+else (no)
+    :Exit;
+    stop
+endif

@@ -1,0 +1,34 @@
+@startuml
+
+' Class Definitions
+class SubSubGroupPosts {
+    + id: Long
+    + title: String
+    + content: String
+    + subsubgroupId: Long
+    + user: User
+    + getId(): Long
+    + setId(id: Long): void
+    + getTitle(): String
+    + setTitle(title: String): void
+    + getContent(): String
+    + setContent(content: String): void
+    + getSubSubgroupId(): Long
+    + setSubSubgroupId(subsubgroupId: Long): void
+    + getUser(): User
+    + setUser(user: User): void
+}
+
+class User {
+    + id: Long
+    + username: String
+    + email: String
+    + getId(): Long
+    + getUsername(): String
+    + getEmail(): String
+}
+
+' Relationships
+SubSubGroupPosts --> User : belongs to
+
+@enduml

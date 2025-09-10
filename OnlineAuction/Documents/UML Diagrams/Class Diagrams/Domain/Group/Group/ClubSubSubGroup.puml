@@ -1,0 +1,24 @@
+@startuml
+class SubSubGroup {
+    + Long id
+    + String name
+    + String description
+    + LocalDateTime creationDate
+    + Set<User> members
+    + SubGroup subGroup
+    + Clubs clubs
+    + User owner
+    + void addMember(User user)
+    + void removeMember(User user)
+    + boolean isMember(User user)
+    + String toString()
+    + boolean equals(Object o)
+    + int hashCode()
+}
+
+SubSubGroup --> "1" SubGroup : contains
+SubSubGroup --> "1" Clubs : belongs to
+SubSubGroup --> "1" User : owned by
+SubSubGroup --> "*" User : members
+
+@enduml

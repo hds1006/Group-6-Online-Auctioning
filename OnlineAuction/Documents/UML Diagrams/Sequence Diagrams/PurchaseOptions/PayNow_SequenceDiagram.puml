@@ -1,0 +1,53 @@
+@startuml
+
+actor "User"
+    participant confirmPurchase.html
+    participant PayPal
+    participant Stripe
+
+    User->>confirmPurchase.html: Load page
+    activate confirmPurchase.html
+    confirmPurchase.html->>User: Display order summary
+    confirmPurchase.html->>User: Display payment options
+    deactivate confirmPurchase.html
+
+    alt Pay with PayPal
+        User->>confirmPurchase.html: Click "Pay with PayPal"
+        activate confirmPurchase.html
+        confirmPurchase.html->>PayPal: Redirect to PayPal
+        activate PayPal
+        PayPal->>User: Complete payment
+        PayPal-->>confirmPurchase.html: Payment successful
+        deactivate PayPal
+        confirmPurchase.html-->>User: Redirect to order confirmation
+        deactivate confirmPurchase.html
+    else Pay with Card
+        User->>confirmPurchase.html: Select shipping or pickup
+        activate confirmPurchase.html
+        alt Shipping
+            confirmPurchase.html->>User: Display shipping details
+            User->>confirmPurchase.html: Select shipping address
+        else Pickup
+            confirmPurchase.html->>User: Display pickup details
+        end
+        User->>confirmPurchase.html: Enter billing address
+        User->>confirmPurchase.html: Enter card details
+        User->>confirmPurchase.html: Click "Pay Now"
+        confirmPurchase.html->>Stripe: Create payment intent
+        activate Stripe
+        Stripe-->>confirmPurchase.html: Payment intent created
+        deactivate Stripe
+        confirmPurchase.html->>Stripe: Confirm payment
+        activate Stripe
+        Stripe-->>confirmPurchase.html: Payment successful
+        deactivate Stripe
+        confirmPurchase.html-->>User: Redirect to order confirmation
+        deactivate confirmPurchase.html
+    end
+
+    User->>confirmPurchase.html: Click "Cancel"
+    activate confirmPurchase.html
+    confirmPurchase.html-->>User: Redirect to cancel purchase
+    deactivate confirmPurchase.html
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml  
+class CarClubCommentsService {  
+  - clubCommentsRepository: ClubCommentsRepository  
+  + saveComment(content: String, postId: Long, user: User): void  
+}  
+  
+class ClubCommentsRepository {  
+  + save(comment: ClubComments): void  
+}  
+  
+class ClubComments {  
+  - id: Long  
+  - content: String  
+  - postId: Long  
+  - user: User  
+  + getId(): Long  
+  + getContent(): String  
+  + getPostId(): Long  
+  + getUser(): User  
+}  
+  
+class User {  
+  - id: Long  
+  - username: String  
+  - email: String  
+  + getId(): Long  
+  + getUsername(): String  
+  + getEmail(): String  
+}  
+  
+CarClubCommentsService --> ClubCommentsRepository : uses  
+ClubCommentsRepository --> ClubComments : returns  
+ClubComments --> User : has user  
+@enduml

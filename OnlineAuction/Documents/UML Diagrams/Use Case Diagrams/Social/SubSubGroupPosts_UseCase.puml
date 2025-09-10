@@ -1,0 +1,29 @@
+@startuml
+title Use Case Diagram for Sub-Subgroup Posts
+
+actor User
+actor Admin
+
+rectangle "Sub-Subgroup Post Management" {
+    User --> (Create Sub-Subgroup Post)
+    User --> (View Sub-Subgroup Post)
+    
+    Admin --> (Delete Sub-Subgroup Post)
+}
+
+note right of (Create Sub-Subgroup Post)
+  A user can create a post
+  within a specific sub-subgroup.
+end note
+
+note right of (View Sub-Subgroup Post)
+  A user can view the post's
+  title, content, and details.
+end note
+
+note right of (Delete Sub-Subgroup Post)
+  Admin or post creator can delete
+  posts to remove unwanted content.
+end note
+
+@enduml

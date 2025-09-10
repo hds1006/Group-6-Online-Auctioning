@@ -1,0 +1,31 @@
+@startuml
+title Group Operations State Diagram
+
+[*] --> Open : Club Initiated
+
+state Open {
+    [*] --> ViewCarClub
+    ViewCarClub --> CreateSubGroup
+    CreateSubGroup --> ViewSubgroup
+    ViewSubgroup --> JoinSubGroup
+    JoinSubGroup --> LeaveSubGroup
+    CreateSubSubGroup --> ViewSubSubGroup
+    ViewSubSubGroup --> JoinSubSubGroup
+    JoinSubSubGroup --> LeaveSubSubGroup
+    CreatePost --> AddComment
+    CreateSubSubGroupPost --> AddSubComment
+}
+
+Open --> Archived : Archive Club
+Archived --> Open : Unarchive Club
+Open --> Deleted : Delete Club
+Archived --> Deleted : Delete Club
+
+Open --> NoMembersSubgroup : No Members in Subgroup
+NoMembersSubgroup --> DeleteSubgroup
+DeleteSubgroup --> Open
+
+Open --> NoMembersSubSubgroup : No Members in Sub-Subgroup
+NoMembersSubSubgroup --> DeleteSubSubgroup
+DeleteSubSubgroup --> Open
+@enduml

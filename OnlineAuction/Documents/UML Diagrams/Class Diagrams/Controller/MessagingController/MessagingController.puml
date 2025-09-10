@@ -1,0 +1,24 @@
+@startuml
+class MessagingController [[java:edu.sru.cpsc.webshopping.controller.MessagingController]] {
+	~log: Logger
+	-messageService: MessageService
+	-messageSocialRepository: MessageSocialRepository
+	-notificationService: NotificationService
+	-statControl: StatisticsDomainController
+	-userService: UserService
+	-marketListingRepository: MarketListingRepository
+	-notificationRepository: OfferNotificationRepository
+	-internalMessaging: User
+	+MessagingController(messageService: MessageService, userService: UserService, notificationService: NotificationService, statControl: StatisticsDomainController, messageSocialRepository: MessageSocialRepository, marketListingRepository: MarketListingRepository, notificationRepository: OfferNotificationRepository)
+	-canSendOffer(buyer: User, listing: MarketListing): boolean
+	-getRemainingOffers(buyer: User, listing: MarketListing): int
+	+sendBuyerCounterOffer(id: long, counterOfferAmount: String, principal: Principal, redirectAttributes: RedirectAttributes): String
+	+sendMessage(id: long, listingId: long, content: String, offerAmount: String, principal: Principal, redirectAttributes: RedirectAttributes): String
+	+notifyCounterOfferCreated(offer: OfferNotification, itemName: String): void
+	+notifyCounterOfferRejected(offer: OfferNotification, itemName: String): void
+	+notifyOfferAccepted(offer: OfferNotification, itemName: String): void
+	+notifyOfferRejection(offer: OfferNotification, itemName: String): void
+	+checkOfferExpirations(): void
+	-notifyOfferExpired(offer: OfferNotification): void
+}
+@enduml

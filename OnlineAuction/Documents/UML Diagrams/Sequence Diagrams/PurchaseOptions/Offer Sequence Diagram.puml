@@ -1,0 +1,52 @@
+@startuml
+
+actor Buyer
+actor Seller
+participant MarketListingPageController
+participant MessagingController
+participant OfferNotificationRepository
+participant MarketListingRepository
+
+== Initial Offer (1 of 3) ==
+Buyer -> MarketListingPageController: messageSeller(listingId, offerAmount)
+activate MarketListingPageController
+
+MarketListingPageController -> OfferNotificationRepository: findByMarketListingIdAndPotentialBuyerUserId()
+MarketListingPageController -> MessagingController: saveMessage(notification)
+MessagingController -> Seller: notifyOfNewOffer()
+
+== Counter Offer Process ==
+Seller -> MarketListingPageController: createCounterOffer(offerId, amount)
+MarketListingPageController -> OfferNotificationRepository: save(counterOffer)
+MarketListingPageController -> MessagingController: notifyCounterOfferCreated()
+MessagingController -> Buyer: counterOfferNotification()
+
+alt Buyer Accepts Counter
+    Buyer -> MarketListingPageController: acceptOffer(offerId)
+    MarketListingPageController -> OfferNotificationRepository: save(acceptedOffer)
+    MarketListingPageController -> MarketListingRepository: save(updatedListing)
+    MarketListingPageController -> MessagingController: notifyOfferAccepted()
+    MessagingController -> Seller: acceptOfferNotification()
+    MarketListingPageController -> ConfirmPurchasePage: initializePurchasePage()
+    
+else Buyer Makes Counter (2 of 3)
+    Buyer -> MarketListingPageController: sendBuyerCounterOffer(offerId, amount)
+    MarketListingPageController -> OfferNotificationRepository: save(newOffer)
+    MarketListingPageController -> MessagingController: saveMessage(notification)
+    MessagingController -> Seller: counterOfferNotification()
+
+else Buyer Rejects
+    Buyer -> MarketListingPageController: rejectCounterOffer(offerId)
+    MarketListingPageController -> OfferNotificationRepository: save(rejectedOffer)
+    MarketListingPageController -> MessagingController: notifyCounterOfferRejected()
+    MessagingController -> Seller: rejectOfferNotification()
+end
+
+note right
+  - Buyer limited to 3 total offers
+  - 24-hour window for all negotiations
+  - System checks remaining offers
+  - Notifications sent through MessageController
+end note
+
+@enduml

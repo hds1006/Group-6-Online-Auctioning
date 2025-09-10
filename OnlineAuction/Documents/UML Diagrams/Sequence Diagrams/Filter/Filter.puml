@@ -1,0 +1,84 @@
+@startuml Widget Filter Flow
+
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+
+actor User
+participant "LandingPageController" as LPC
+participant "MarketListingService" as MLS
+participant "MarketListingRepository" as MLR
+database "Database" as DB
+
+== Initial Filter Request ==
+User -> LPC : GET /BrowseWidgetsButton/page/{pageNumber}/attributeFiltered
+note right of User
+    With filter parameters:
+    - year
+    - condition
+    - make
+    - model_car
+    - keywords
+    - engine
+end note
+
+activate LPC
+    LPC -> MLS : findPageWithAttributeFilter(pageNum, filters...)
+    activate MLS
+        
+        MLS -> MLS : Create Specification<MarketListing>
+        note right of MLS
+            Build predicates for each filter:
+            - Not deleted
+            - Available quantity
+            - Match filter criteria
+        end note
+        
+        MLS -> MLR : findAll(specification, pageable)
+        activate MLR
+            
+            MLR -> DB : Execute Query
+            activate DB
+                DB --> MLR : Return Filtered Results
+            deactivate DB
+            
+            MLR --> MLS : Return Page<MarketListing>
+        deactivate MLR
+        
+        MLS -> MLS : getUpdatedAttributeValues(selectedFilters)
+        note right of MLS
+            Update dependent filter values
+            based on current selection
+        end note
+        
+        MLS --> LPC : Return Filtered Results
+    deactivate MLS
+    
+    LPC -> LPC : Process Results
+    note right of LPC
+        - Process images
+        - Prepare model attributes
+        - Setup pagination
+    end note
+    
+    LPC --> User : Return browseWidgets view
+deactivate LPC
+
+== Dependent Filter Update ==
+opt Update Dependent Filters
+    User -> LPC : Filter Change Event
+    activate LPC
+        LPC -> MLS : getUpdatedAttributeValues(filters, changedAttribute)
+        activate MLS
+            MLS -> MLS : Calculate Available Values
+            note right of MLS
+                Determine valid options for
+                other filters based on
+                current selection
+            end note
+            MLS --> LPC : Return Updated Options
+        deactivate MLS
+        LPC --> User : Update Filter Dropdowns
+    deactivate LPC
+end
+
+@enduml
