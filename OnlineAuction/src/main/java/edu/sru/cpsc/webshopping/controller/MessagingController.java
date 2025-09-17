@@ -394,7 +394,28 @@ public class MessagingController {
             }
         }
     }
+    
+	// Fetches the conversation between the user and another user 
 
+	@RequestMapping(value = "/messages/conversation/{otherUserId}", method = RequestMethod.GET) 
+	@ResponseBody 
+	public List<SocialMessage> getConversation(@PathVariable long otherUserId, Principal principal) {
+	 User currentUser = userService.getUserByUsername(principal.getName());
+	 User otherUser = userService.getUserById(otherUserId); 
+
+	 // Retrieves the messages 
+
+	 List<SocialMessage> messages = messageService.getAllMessagesForUser(currentUser, otherUser); 
+
+	 // Mark all unread messages for currentUser as read 
+
+	 messageService.markAllMessagesAsRead(currentUser); 
+
+	 return messages; 
+
+	} 
+    
+    
     // Retrieves all messages to the user
     
  	@RequestMapping(value = "/messages", method = RequestMethod.GET)
