@@ -31,6 +31,9 @@ import edu.sru.cpsc.webshopping.repository.misc.MessageSocialRepository;
 import edu.sru.cpsc.webshopping.service.MessageService;
 import edu.sru.cpsc.webshopping.service.NotificationService;
 import edu.sru.cpsc.webshopping.service.UserService;
+
+import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  * Controller class responsible for handling all messaging and notification functionality
  * in the web shopping application. This includes handling offers, counter-offers,
@@ -391,6 +394,24 @@ public class MessagingController {
             }
         }
     }
+
+	// Retrieves the conversation between the user and another user
+	
+	@RequestMapping(value = "/messages/conversation/{otherUserId}", method = RequestMethod.GET)
+	@ResponseBody
+	public List<SocialMessage> getConversation(@PathVariable long otherUserId, Principal principal) {
+	    User currentUser = userService.getUserByUsername(principal.getName());
+	    User otherUser = userService.getUserById(otherUserId);
+	    
+	    // Retrieve the conversation
+	    List<SocialMessage> messages = messageService.getAllMessagesForUser(currentUser, otherUser);
+	    
+	    // Mark all unread messages for currentUser as read
+	    messageService.markAllMessagesAsRead(currentUser);
+	    
+	    return messages;
+	}
+
 
     private void notifyOfferExpired(OfferNotification offer) {
         User buyer = userService.getUserById(offer.getPotentialBuyerUserId());
