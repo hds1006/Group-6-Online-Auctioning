@@ -48,9 +48,9 @@ public class PaymentDetails {
 	@NonNull
 	private String securityCode;
 
-	@NonNull
+	
     @ManyToOne
-    @JoinColumn(name = "billing_address_id")
+    @JoinColumn(name = "billing_address_id", nullable = true)
 	private ShippingAddress billingAddress;
 	
 	@ManyToOne(cascade = CascadeType.MERGE)

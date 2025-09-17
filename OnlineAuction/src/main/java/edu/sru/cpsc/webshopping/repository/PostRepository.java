@@ -2,6 +2,7 @@ package edu.sru.cpsc.webshopping.repository;
 
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     
     @Query("SELECT p FROM Post p WHERE p.lastCommentedOn < :cutoffDate")
     List<Post> findPostsNotCommentedSince(@Param("cutoffDate") Date cutoffDate);
-
+    
 }
