@@ -33,141 +33,143 @@
 	<div th:insert="~{header :: header}"></div>
 	<!-- END HEADER BAR -->
 
-	<h2>Discussion Board</h2>
-
-
-	<summary>Main Topic: Auto Parts</summary>
-
-	<div class="comment-thread">
-		<!-- Post button -->
-		<button type="button" data-toggle="post-form"
-			data-target="form-container">Post</button>
-		<!-- Post form -->
-		<div id="form-container" class="d-none">
-			<br>
-			<form th:action="@{/post}" th:object="${post}" method="post"
-				action="">
-				<label for="title">Title: <input type="text" id="title"
-					th:field="*{title}" style="width: 273px; height: 30px;" required maxlength="35" oninput="validateField(this)"></label> <br />
-				<textarea id="content" th:field="*{content}"
-					placeholder="Make a Post" rows="4" cols=""
-					style="width: 1144px; height: 81px;" required maxlength="5000" oninput="validateField(this)"></textarea>
-				<br />
-				<button type="submit">Submit</button>
+	<!-- Nicholas Maule 9/9/2025 this div is named content and it seperates the header bar from the contents of the discussion board page -->
+	<div id="content">
+			<h2>Discussion Board</h2>
+		
+		
+			<summary>Main Topic: Auto Parts</summary>
+		
+			<div class="comment-thread">
+				<!-- Post button -->
 				<button type="button" data-toggle="post-form"
-					data-target="form-container">Cancel</button>
-			</form>
-		</div>
-		<!-- Search Bar - title -->
-		<div class="search-bar-container">
-			<div class="container mt-3">
-				<input type="text" id="postSearch"
-					placeholder="Search for a post title" class="form-control mb-3"
-					style="width: 343px;" />
-			</div>
-		</div>
-		<!-- Search Bar - content -->
-		<div class="search-bar-container">
-			<div class="container mt-3">
-				<input type="text" id="contentSearch"
-					placeholder="Search by keyword" class="form-control mb-3"
-					style="width: 343px;" />
-			</div>
-		</div>
-	</div>
-
-
-	<!-- Post titles on the left of webpage -->
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-4 scrollable-titles">
-				<div data-bs-spy="scroll" data-bs-target="#navbar-example3"
-					data-bs-smooth-scroll="true" class="scrollspy-example-2"
-					tabindex="0">
-					<nav id="navbar-example3"
-						class="h-100 flex-column align-items-stretch pe-4 border-end">
-						<nav class="nav nav-pills flex-column">
-							<div th:each="post, iterStat : ${posts}">
-								<a class="nav-link" th:href="'#'"
-									th:data-target="${'post-content-' + post.id}"
-									data-title="${post.title}" data-content="${post.content}"
-									th:text="|${post.title} - ${#dates.format(post.lastCommentedOn, 'dd MMM yyyy HH:mm')}|"
-									th:onclick="">Post Title</a>
-							</div>
-						</nav>
-					</nav>
+					data-target="form-container">Post</button>
+				<!-- Post form -->
+				<div id="form-container" class="d-none">
+					<br>
+					<form th:action="@{/post}" th:object="${post}" method="post"
+						action="">
+						<label for="title">Title: <input type="text" id="title"
+							th:field="*{title}" style="width: 273px; height: 30px;" required maxlength="35" oninput="validateField(this)"></label> <br />
+						<textarea id="content" th:field="*{content}"
+							placeholder="Make a Post" rows="4" cols=""
+							style="width: 1144px; height: 81px;" required maxlength="5000" oninput="validateField(this)"></textarea>
+						<br />
+						<button type="submit">Submit</button>
+						<button type="button" data-toggle="post-form"
+							data-target="form-container">Cancel</button>
+					</form>
+				</div>
+				<!-- Search Bar - title -->
+				<div class="search-bar-container">
+					<div class="container mt-3">
+						<input type="text" id="postSearch"
+							placeholder="Search for a post title" class="form-control mb-3"
+							style="width: 343px;" />
+					</div>
+				</div>
+				<!-- Search Bar - content -->
+				<div class="search-bar-container">
+					<div class="container mt-3">
+						<input type="text" id="contentSearch"
+							placeholder="Search by keyword" class="form-control mb-3"
+							style="width: 343px;" />
+					</div>
 				</div>
 			</div>
-
-
-			<!-- Post contents that had been clicked -->
-			<div class="col-8 scrollable-content" style="width: 66%; max-width: none;">
-				<div data-bs-spy="scroll" data-bs-target="#navbar-example3"
-					data-bs-smooth-scroll="true" class="scrollspy-example-2"
-					tabindex="0">
-					<div th:each="post : ${posts}" th:id="${'post-' + post.id}">
-						<div th:each="post, iterStat : ${posts}"
-							th:id="${'post-content-' + post.id}" class="post-content"
-							style="display: none;">
-							<h4 th:text="${post.title}">Post Title</h4>
-
-							<!-- notifying if something is archived -->
-							<span th:if="${post.archived}" class="archived-badge">Archived</span>
-
-							<p th:text="${post.content}">Post Content</p>
-							<p>
-								Posted by: <span th:text="${post.user.username}"></span> on <span
-									th:text="${#dates.format(post.createdOn, 'dd MMM yyyy HH:mm')}">Post
-									Date</span>
-							</p>
-							
-							
-							<!-- From Here - Display only the first 3 comments -->
-                <div th:each="comment, iterStat : ${post.comments}" th:if="${iterStat.index < 3}">
-                    <div class="comment-detail">
-                        <p th:text="${comment.content}">Comment Content</p>
-                        <p>
-                            Commented by: <span th:text="${comment.user.username}"></span>
-                            on <span
-                                th:text="${#dates.format(comment.createdOn, 'dd MMM yyyy HH:mm')}"></span><br />
-                        </p>
-                    </div>
-                </div>
-               
-  
-					
-                			<!-- Button For Submitting Comment -->
-							<button type="button" data-toggle="reply-form"
-								th:data-target="'form-container-' + ${post.id}"
-								th:if="${!post.archived}">Comment</button>
+		
+		
+			<!-- Post titles on the left of webpage -->
+			<div class="container-fluid">
+			<div class="row">
+				<div class="col-4 scrollable-titles">
+					<div data-bs-spy="scroll" data-bs-target="#navbar-example3"
+						data-bs-smooth-scroll="true" class="scrollspy-example-2"
+						tabindex="0">
+						<nav id="navbar-example3"
+							class="h-100 flex-column align-items-stretch pe-4 border-end">
+							<nav class="nav nav-pills flex-column">
+								<div th:each="post, iterStat : ${posts}">
+									<a class="nav-link" th:href="'#'"
+										th:data-target="${'post-content-' + post.id}"
+										data-title="${post.title}" data-content="${post.content}"
+										th:text="|${post.title} - ${#dates.format(post.lastCommentedOn, 'dd MMM yyyy HH:mm')}|"
+										th:onclick="">Post Title</a>
+								</div>
+							</nav>
+						</nav>
+					</div>
+				</div>
+	
+	
+				<!-- Post contents that had been clicked -->
+				<div class="col-8 scrollable-content" style="width: 66%; max-width: none;">
+					<div data-bs-spy="scroll" data-bs-target="#navbar-example3"
+						data-bs-smooth-scroll="true" class="scrollspy-example-2"
+						tabindex="0">
+						<div th:each="post : ${posts}" th:id="${'post-' + post.id}">
+							<div th:each="post, iterStat : ${posts}"
+								th:id="${'post-content-' + post.id}" class="post-content"
+								style="display: none;">
+								<h4 th:text="${post.title}">Post Title</h4>
+	
+								<!-- notifying if something is archived -->
+								<span th:if="${post.archived}" class="archived-badge">Archived</span>
+	
+								<p th:text="${post.content}">Post Content</p>
+								<p>
+									Posted by: <span th:text="${post.user.username}"></span> on <span
+										th:text="${#dates.format(post.createdOn, 'dd MMM yyyy HH:mm')}">Post
+										Date</span>
+								</p>
 								
-							<!--  Button for Archiving Comments -->
-							<form th:action="@{/post/archive/{postId}(postId=${post.id})}"
-								method="post" action="">
-								<button type="submit" class="btn-warning"
-									th:if="${user.id == post.user.id and !post.archived}">Archive</button>
-							</form>
-						</div>
-
-						<div th:id="'form-container-' + ${post.id}"
-							class="d-none comment-content" style="display: block;">
-							<form th:action="@{/post/{postId}/comment(postId=${post.id})}"
-								method="post" action="">
-								<textarea id="commentcontent" name="content"
-									placeholder="Write a comment..." rows="4" cols=""
-									style="width: 597px; height: 111px;" required maxlength="5000" oninput="validateField(this)"></textarea>
-								<br />
-								<button type="submit">Submit</button>
-								<button type="button" data-toggle="cancel-form"
-									th:data-target="'form-container-' + ${post.id}">Cancel</button>
-							</form>
+								
+								<!-- From Here - Display only the first 3 comments -->
+	                <div th:each="comment, iterStat : ${post.comments}" th:if="${iterStat.index < 3}">
+	                    <div class="comment-detail">
+	                        <p th:text="${comment.content}">Comment Content</p>
+	                        <p>
+	                            Commented by: <span th:text="${comment.user.username}"></span>
+	                            on <span
+	                                th:text="${#dates.format(comment.createdOn, 'dd MMM yyyy HH:mm')}"></span><br />
+	                        </p>
+	                    </div>
+	                </div>
+	               
+	  
+						
+	                			<!-- Button For Submitting Comment -->
+								<button type="button" data-toggle="reply-form"
+									th:data-target="'form-container-' + ${post.id}"
+									th:if="${!post.archived}">Comment</button>
+									
+								<!--  Button for Archiving Comments -->
+								<form th:action="@{/post/archive/{postId}(postId=${post.id})}"
+									method="post" action="">
+									<button type="submit" class="btn-warning"
+										th:if="${user.id == post.user.id and !post.archived}">Archive</button>
+								</form>
+							</div>
+	
+							<div th:id="'form-container-' + ${post.id}"
+								class="d-none comment-content" style="display: block;">
+								<form th:action="@{/post/{postId}/comment(postId=${post.id})}"
+									method="post" action="">
+									<textarea id="commentcontent" name="content"
+										placeholder="Write a comment..." rows="4" cols=""
+										style="width: 597px; height: 111px;" required maxlength="5000" oninput="validateField(this)"></textarea>
+									<br />
+									<button type="submit">Submit</button>
+									<button type="button" data-toggle="cancel-form"
+										th:data-target="'form-container-' + ${post.id}">Cancel</button>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<script type="text/javascript">
 		document
 				.addEventListener(
@@ -319,8 +321,9 @@
 												.replace(/\+/g, " "));
 							}
 
+							//Nicholas Maule 9/9/2025 Added .getElementByID('content so that only navlinks in the content part of the page preventDefault not the ones in the header ')
 							// Event listener for each nav link to display post content
-							document
+							document.getElementById('content') 
 									.querySelectorAll('.nav-link')
 									.forEach(
 											function(link) {
